@@ -18,7 +18,7 @@ function App() {
     <div className="mx-auto max-w-7xl sm:px-6 lg:px-8 mt-5 h-full ">
       {" "}
       <span>
-        <h1 className="font-bold text-5xl text-blue-950 ">
+        <h1 className="font-bold text-5xl text-blue-950 text-center">
           Github{" "}
           <mark className="px-2 text-white bg-indigo-800 rounded">Search</mark>{" "}
         </h1>

@@ -31,12 +31,21 @@ function Home({ alert, showAlert }) {
       let res = await axios.get(url, { auth });
 
       setResults(res.data.items);
-      showAlert({
-        type: "success",
-        message: `Found ${res.data.items.length} results for ${username}`,
-      });
+      res.data.items.length > 0
+        ? showAlert({
+            type: "success",
+            message: `Found ${res.data.items.length} results for "${username}"`,
+          })
+        : showAlert({
+            type: "info",
+            message: `No results found for "${username}"`,
+          });
     } catch (err) {
       console.log(err);
+      showAlert({
+        type: "error",
+        message: err.response.data.message,
+      });
     }
     setWelcome(false);
     setLoading(false);
@@ -73,7 +82,7 @@ function Home({ alert, showAlert }) {
         />
       ) : welcome ? (
         <div>
-          <p className="mt-5 text-sm italic text-center text-gray-400">
+          <p className="mt-5 text-sm italic text-center text-white">
             🌟 Browse through some popular Github profiles below 🌟
           </p>
           <SearchResults users={results} />

@@ -44,7 +44,7 @@ function Search({ fetchDataFromGithub, alert }) {
           type="button"
           className="relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md px-3 py-2 text-sm text-white bg-indigo-800 ring-1 ring-inset ring-gray-300 hover:bg-indigo-800 border border-indigo-600  disabled:border disabled:bg-gray-400  disabled:border-indigo-300"
           onClick={() => fetchDataFromGithub(username)}
-          // disabled={!username}
+          disabled={!username}
         >
           <MagnifyingGlassCircleIcon
             className="-ml-0.5 h-10 w-10 text-white "
