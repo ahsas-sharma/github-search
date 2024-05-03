@@ -1,3 +1,4 @@
+import CONFIG from "../../config/config";
 // import { BackwardIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -17,8 +18,8 @@ export default function UserDetail() {
   }, []);
 
   let auth = {
-    username: "ahsas-sharma",
-    password: "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",
+    username: CONFIG.VITE_GITHUB_USERNAME,
+    password: CONFIG.VITE_GITHUB_PASSWORD,
   };
 
   async function getUserData() {

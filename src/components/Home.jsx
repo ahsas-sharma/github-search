@@ -1,3 +1,4 @@
+import CONFIG from "../config/config";
 import Search from "./Search";
 import SearchResults from "./SearchResults";
 import axios from "axios";
@@ -10,9 +11,10 @@ function Home() {
   const [loading, setLoading] = useState(false);
 
   let auth = {
-    username: "ahsas-sharma",
-    password: "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",
+    username: CONFIG.VITE_GITHUB_USERNAME,
+    password: CONFIG.VITE_GITHUB_PASSWORD,
   };
+
   useEffect(() => {
     fetchWelcomeData();
   }, []);
