@@ -5,7 +5,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { MagnifyingGlass } from "react-loader-spinner";
 
-function Home() {
+function Home({ alert, showAlert }) {
   const [welcome, setWelcome] = useState(true);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -21,10 +21,20 @@ function Home() {
 
   async function fetchDataFromGithub(username) {
     setLoading(true);
+    if (!username) {
+      showAlert({ type: "error", message: "Username cannot be blank." });
+      setLoading(false);
+      return;
+    }
     let url = `https://api.github.com/search/users?q=${username}`;
     try {
       let res = await axios.get(url, { auth });
+
       setResults(res.data.items);
+      showAlert({
+        type: "success",
+        message: `Found ${res.data.items.length} results for ${username}`,
+      });
     } catch (err) {
       console.log(err);
     }
@@ -44,7 +54,7 @@ function Home() {
 
   return (
     <>
-      <Search fetchDataFromGithub={fetchDataFromGithub} />
+      <Search fetchDataFromGithub={fetchDataFromGithub} alert={alert} />
       {loading ? (
         <MagnifyingGlass
           visible={true}
