@@ -2,16 +2,18 @@ import CONFIG from "../config/config";
 import Search from "./Search";
 import SearchResults from "./SearchResults";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MagnifyingGlass } from "react-loader-spinner";
+import githubContext from "../contexts/Github/GithubContext";
+import { SET_LOADING, SET_USERS, SET_ALERT } from "../contexts/types";
 
-function Home({ alert, showAlert }) {
+function Home() {
   const [welcome, setWelcome] = useState(true);
-  const [results, setResults] = useState([]);
+  const { dispatch, loading, users, alert } = useContext(githubContext);
 
   let auth = {
-    username: CONFIG.VITE_GITHUB_USERNAME,
-    password: CONFIG.VITE_GITHUB_PASSWORD,
+    username: CONFIG.GITHUB_USERNAME,
+    password: CONFIG.GITHUB_PASSWORD,
   };
 
   useEffect(() => {
@@ -19,50 +21,62 @@ function Home({ alert, showAlert }) {
   }, []);
 
   async function fetchDataFromGithub(username) {
-    setLoading(true);
+    dispatch({ type: SET_LOADING });
     if (!username) {
-      showAlert({ type: "error", message: "Username cannot be blank." });
-      setLoading(false);
+      dispatch({
+        type: SET_ALERT,
+        payload: { type: "error", message: "Username cannot be blank." },
+      });
       return;
     }
     let url = `https://api.github.com/search/users?q=${username}`;
     try {
+      console.log(auth);
       let res = await axios.get(url, { auth });
-
-      setResults(res.data.items);
+      dispatch({ type: SET_USERS, payload: res.data.items });
       res.data.items.length > 0
-        ? showAlert({
-            type: "success",
-            message: `Found ${res.data.items.length} results for "${username}"`,
+        ? dispatch({
+            type: SET_ALERT,
+            payload: {
+              type: "success",
+              message: `Found ${res.data.items.length} results for "${username}"`,
+            },
           })
-        : showAlert({
-            type: "info",
-            message: `No results found for "${username}"`,
+        : dispatch({
+            type: SET_ALERT,
+            payload: {
+              type: "info",
+              message: `No results found for "${username}"`,
+            },
           });
     } catch (err) {
       console.log(err);
-      showAlert({
-        type: "error",
-        message: err.response.data.message,
+      dispatch({
+        type: SET_ALERT,
+        payload: { type: "error", message: err.response.data.message },
       });
     }
-    setWelcome(false);
-    setLoading(false);
   }
 
   async function fetchWelcomeData() {
     let url = `https://api.github.com/users`;
     try {
+      console.log("AUTH", auth);
       let res = await axios.get(url, { auth });
-      setResults(res.data);
+      dispatch({ type: SET_USERS, payload: res.data });
+      setWelcome(true);
     } catch (err) {
       console.log(err);
+      dispatch({
+        type: SET_ALERT,
+        payload: { type: "error", message: err.response.data.message },
+      });
     }
   }
 
   return (
     <>
-      <Search fetchDataFromGithub={fetchDataFromGithub} alert={alert} />
+      <Search fetchDataFromGithub={fetchDataFromGithub} />
       {loading ? (
         <MagnifyingGlass
           visible={true}
@@ -84,14 +98,14 @@ function Home({ alert, showAlert }) {
           <p className="mt-5 text-sm  text-center text-gray-600">
             🌟 Browse through some popular Github profiles below 🌟
           </p>
-          <SearchResults users={results} />
+          <SearchResults users={users} />
         </div>
       ) : (
         <div>
           <p className="mt-5 text-sm italic text-center text-gray-400">
             Showing search results
           </p>
-          <SearchResults users={results} />
+          <SearchResults users={users} />
         </div>
       )}
     </>

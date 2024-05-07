@@ -6,7 +6,9 @@ function GithubState(props) {
   const initialValue = {
     loading: false,
     users: [],
-    alert: false,
+    userDetail: {},
+    userRepos: [],
+    alert: { message: "" },
   };
 
   let [state, dispatch] = useReducer(githubReducer, initialValue);
@@ -15,7 +17,12 @@ function GithubState(props) {
     <>
       <githubContext.Provider
         value={{
+          dispatch: dispatch,
           loading: state.loading,
+          alert: state.alert,
+          users: state.users,
+          userDetail: state.userDetail,
+          userRepos: state.userRepos,
         }}
       >
         {props.children}

@@ -2,7 +2,7 @@ import React from "react";
 
 function CustomAlert({ type, message }) {
   let baseClass =
-    "mt-5 mb-5 h-6 flex flex-auto m-auto items-center justify-center border rounded-md text-white text-sm text-center w-96";
+    "mt-5 mb-5 max-w-5xl flex flex-auto m-auto items-center justify-center border rounded-md text-white text-sm text-center w-96";
 
   let typeClass =
     type === "error"

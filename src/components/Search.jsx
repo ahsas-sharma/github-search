@@ -1,22 +1,25 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import PropTypes from "prop-types";
 import CustomAlert from "./CustomAlert";
+import githubContext from "../contexts/Github/GithubContext";
 
 import {
   UsersIcon,
   MagnifyingGlassCircleIcon,
 } from "@heroicons/react/20/solid";
 
-function Search({ fetchDataFromGithub, alert }) {
+function Search({ fetchDataFromGithub }) {
   const [username, setUsername] = useState("");
+  const { alert } = useContext(githubContext);
 
   const onUsernameChangeHandler = (event) => {
     setUsername(event.target.value.trim());
   };
 
   useEffect(() => {
-    console.log(alert);
+    // console.log(alert);
   }, []);
+
   return (
     <div>
       <div className="mt-5 flex rounded-md shadow-sm">
