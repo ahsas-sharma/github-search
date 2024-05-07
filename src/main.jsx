@@ -3,6 +3,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App.jsx";
 import UserDetail from "./components/UserDetail/UserDetail.jsx";
 import "./index.css";
+import GithubState from "./contexts/Github/GithubState.jsx";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -16,5 +18,7 @@ const router = createBrowserRouter([
   },
 ]);
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <RouterProvider router={router} />
+  <GithubState>
+    <RouterProvider router={router} />
+  </GithubState>
 );

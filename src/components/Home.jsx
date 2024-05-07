@@ -8,7 +8,6 @@ import { MagnifyingGlass } from "react-loader-spinner";
 function Home({ alert, showAlert }) {
   const [welcome, setWelcome] = useState(true);
   const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   let auth = {
     username: CONFIG.VITE_GITHUB_USERNAME,
@@ -82,7 +81,7 @@ function Home({ alert, showAlert }) {
         />
       ) : welcome ? (
         <div>
-          <p className="mt-5 text-sm italic text-center text-white">
+          <p className="mt-5 text-sm  text-center text-gray-600">
             🌟 Browse through some popular Github profiles below 🌟
           </p>
           <SearchResults users={results} />
